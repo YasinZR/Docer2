@@ -1,5 +1,5 @@
 # Используйте официальный образ Node.js как базовый
-FROM node:14-alpine as builder
+FROM node:18-alpine as builder
 
 # Установите рабочую директорию в контейнере
 WORKDIR /app
@@ -9,6 +9,8 @@ COPY . .
 
 # Установите зависимости проекта
 RUN npm install
+RUN npm install react-router-dom
+
 
 # Соберите приложение для продакшена
 RUN npm run build
