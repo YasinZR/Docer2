@@ -7,13 +7,16 @@ WORKDIR /app
 # Копируйте файлы проекта в контейнер
 COPY . .
 
+#RUN npm config set unsafe-perm true
 # Установите зависимости проекта
 RUN npm install
 RUN npm install react-router-dom
 
 
+
 # Соберите приложение для продакшена
 RUN npm run build
+
 
 FROM nginx:stable-alpine
 COPY --from=builder /app/dist /usr/share/nginx/html
