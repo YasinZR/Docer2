@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  mongo_db:
+    image: mongo:latest
+    container_name: mongo_db
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: 123456
+      MONGO_INITDB_DATABASE: Store
+    volumes:
+      - mongodb_data_container:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    ports:
+      - 27017:27017
+
+
+  web:
+    build: reactmongo
+    container_name: frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend2
+
+  backend2:
+    build: ./mongod
+    container_name: backend2
+    ports:
+      - 8085:8080
+    depends_on:
+      - mongo_db
+
+volumes:
+  mongodb_data_container:
